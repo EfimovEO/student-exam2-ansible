@@ -1,0 +1,23 @@
+---
+# handlers file for nginx
+  - name: restart nginx
+    docker_container:
+      name: nginx
+      image: nginx
+      detach: True
+      state: started
+      restart: yes
+      ports:
+        - 80:80
+      expose:
+        - '80'
+      volumes:
+        - /var/nginx_con/nginx.conf:/etc/nginx/nginx.conf:ro
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+
+  - name: Restart firewalld
+    service:
+      name: firewalld
+      state: reloaded
+

@@ -1,0 +1,6 @@
+---
+# handlers file for web_app
+  - name: Restart firewalld
+    systemd:
+      name: firewalld
+      state: reloaded

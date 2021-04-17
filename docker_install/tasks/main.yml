@@ -1,0 +1,38 @@
+---
+# tasks file for docker_install
+  - name: Add Docker repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docer-ce.repo
+    become: yes
+
+  - name: install docker-py
+    become: yes
+    pip:
+      name: docker-py
+      state: latest
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+
+  - name: install docker
+    become: yes
+    yum:
+      name: 
+        -  docker-ce
+        -  docker-ce-cli
+        -  containerd.io
+      state: present
+
+  - name: Ensure docker users are added to the docker group.
+    become: yes
+    user:
+      name: ansible
+      groups: docker
+      append: true
+
+  - name: Ensure Docker is started and enabled at boot.
+    become: yes
+    service:
+      name: docker
+      state: started
+      enabled: true

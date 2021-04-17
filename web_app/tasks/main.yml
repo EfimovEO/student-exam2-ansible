@@ -1,0 +1,57 @@
+---
+# tasks file for nginx
+
+  - name: Log into DockerHub
+    community.docker.docker_login:
+      username: efim4ik
+      password: "{{ dockerhub_password }}" 
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+      dockerhub_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63623236316231383237373631336564646566623063636133633231313434386465316539613736
+          6337333537616134663539333065386534316632376635370a386430323937646433616461386637
+          37386665333331326434383838353037663264613839336337393530646566393563383066646666
+          3962636464626664300a363666663466363762316232396266653130623135336331393931656135
+          32613431656264373030643436363863326539386132656238306131333465336637333931623733
+          3864373165363332636434356163626337353431313733656435
+
+  - name: Install web_app
+    docker_container:
+      name: web_app-{{ item }}
+      image: efim4ik/epam_exam-2:web_app_con
+      hostname: web_app-{{ item }}
+      detach: True
+      state: started 
+      ports:
+        - 808{{ item }}:5000
+      expose:
+        - '5000'
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+    with_sequence: start=0 end=2
+
+  - name: Log out of DockerHub
+    community.docker.docker_login:
+      state: absent
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+
+#ansible-galaxy collection install ansible.posix
+  - name: open ports 
+    become: yes
+    firewalld:
+      zone: public
+      port: 808{{ item }}/tcp
+      permanent: true
+      immediate: yes
+      state: enabled
+#    notify:
+#      - Restart firewalld
+    with_sequence: start=0 end=2
+
+  - name: disable selinux
+    become: yes
+    selinux:
+      state: disabled
+

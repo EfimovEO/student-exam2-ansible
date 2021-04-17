@@ -1,0 +1,21 @@
+---
+#  - name: exam2-ansible
+# remote_user: ansible
+#
+  - hosts: all
+    remote_user: ansible
+    roles:
+      - role: docker_install
+
+  - hosts: nginx
+    gather_facts: no
+    remote_user: ansible
+    roles:
+      - role: nginx
+
+
+  - hosts: web_app
+    gather_facts: no
+    remote_user: ansible
+    roles:
+      -  role: web_app
