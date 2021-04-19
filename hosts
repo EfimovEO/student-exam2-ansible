@@ -1,13 +1,5 @@
-all:
-  hosts:
-#  vars:
-#    ansible_python_interpreter: /usr/bin/python3
-  children:
+[nginx]
+192.168.56.10
 
-    nginx:
-      hosts:
-        192.168.56.10:
-
-    web_app:
-      hosts:   
-        192.168.56.20:
+[web_app]
+192.168.56.20
