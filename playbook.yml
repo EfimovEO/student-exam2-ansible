@@ -4,12 +4,10 @@
       - docker_install
 
   - hosts: nginx
-    gather_facts: no
     roles:
       - nginx
 
 
   - hosts: web_app
-    gather_facts: no
     roles:
       - web_app
