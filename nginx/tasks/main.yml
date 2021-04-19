@@ -3,7 +3,7 @@
 
   - name: create a directory if it does not exist
     become: yes
-    ansible.builtin.file:
+    file:
       path: /var/nginx_con/
       state: directory
       mode: '0775'
