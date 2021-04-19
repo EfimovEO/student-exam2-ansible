@@ -1,5 +1,5 @@
 ---
-  - hosts: all
+  - hosts: servers
     roles:
       - docker_install
 

@@ -3,3 +3,7 @@
 
 [web_app]
 192.168.56.20
+
+[servers:children]
+nginx
+web_app
