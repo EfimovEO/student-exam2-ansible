@@ -3,11 +3,6 @@ pipeline {
     stages {
 	    stage('DEPLOY') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[ name: "main"]],
-                    userRemoteConfigs: [[ credentialsId: "github_eeo", url:'https://github.com/EfimovEO/student-exam2-ansible.git']]
-                ])
                 ansiblePlaybook(
                     credentialsId: 'ansible_exam2',
                     inventory: 'hosts',
